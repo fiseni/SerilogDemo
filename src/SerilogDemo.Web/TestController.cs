@@ -45,6 +45,9 @@ public class TestController : ControllerBase
 
         var customers = await dbContext.Customers.ToListAsync(cancellationToken);
 
+        // Testing the output format of serialized complex objects.
+        _logger.LogInformation("Test db called, customers: {@customers}", customers);
+
         return Ok(customers);
     }
 }
