@@ -44,14 +44,14 @@ public static class LoggingExtensions
         return builder;
     }
 
-    // If you do it this way, the UseSerilogRequestLogging doesn't work correctly.
+    // You may do it this way as well. Refer to Two-stage initialization for a better version of this.
     public static WebApplicationBuilder ConfigureSerilog2(this WebApplicationBuilder builder)
     {
-        var logger = new LoggerConfiguration()
+        Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
             .CreateLogger();
 
-        builder.Services.AddSerilog(logger);
+        builder.Services.AddSerilog();
 
         return builder;
     }
