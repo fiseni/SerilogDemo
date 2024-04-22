@@ -16,9 +16,30 @@ public class DbInitializer : IHostedService
         using var scope = _serviceScopeFactory.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        await context.Database.EnsureCreatedAsync(cancellationToken);
+        var dbCreated = await context.Database.EnsureCreatedAsync(cancellationToken);
 
-        if (await context.Customers.AnyAsync(cancellationToken)) return;
+        // If it already exists then exit, do not seed anything.
+        if (!dbCreated) return;
+
+        var logTableSql = """
+            CREATE TABLE [Logs] (
+               [Id] int IDENTITY(1,1) NOT NULL,
+               [Message] nvarchar(max) NULL,
+               [MessageTemplate] nvarchar(max) NULL,
+               [Level] nvarchar(128) NULL,
+               [TimeStamp] datetime NOT NULL,
+               [Exception] nvarchar(max) NULL,
+               [LogEvent] nvarchar(max) NULL,
+               [ProcessName] nvarchar(250) NULL,
+               [UserId] nvarchar(250) NULL,
+               [TraceId] nvarchar(250) NULL,
+               [SpanId] nvarchar(250) NULL,
+
+               CONSTRAINT [PK_Logs] PRIMARY KEY CLUSTERED ([Id] ASC)
+            );
+            """;
+
+        await context.Database.ExecuteSqlRawAsync(logTableSql, cancellationToken);
 
         var customers = new List<Customer>
         {
