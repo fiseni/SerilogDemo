@@ -43,9 +43,9 @@ public class DbInitializer : IHostedService
 
         var customers = new List<Customer>
         {
-            new() { Name = "Customer1", Email = "email1@local.com" },
-            new() { Name = "Customer2", Email = "email2@local.com" },
-            new() { Name = "Customer3", Email = "email3@local.com" },
+            new() { Name = "Customer1", Email = "email1@local.com", Age = 21 },
+            new() { Name = "Customer2", Email = "email2@local.com", Age = 31 },
+            new() { Name = "Customer3", Email = "email3@local.com", Age = 41 },
         };
 
         context.Customers.AddRange(customers);

@@ -39,11 +39,15 @@ public class TestController : ControllerBase
     }
 
     [HttpGet("test-db")]
-    public async Task<IActionResult> TestDb([FromServices] AppDbContext dbContext, CancellationToken cancellationToken)
+    public async Task<IActionResult> TestDb(int? age, [FromServices] AppDbContext dbContext, CancellationToken cancellationToken)
     {
         // Testing EF log outputs.
 
-        var customers = await dbContext.Customers.ToListAsync(cancellationToken);
+        age ??= 30;
+
+        var customers = await dbContext.Customers
+            .Where(x => x.Age > age)
+            .ToListAsync(cancellationToken);
 
         // Testing the output format of serialized complex objects.
         _logger.LogInformation("Test db called, customers: {@customers}", customers);

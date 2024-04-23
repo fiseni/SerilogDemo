@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddSerilog();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
 builder.Services.AddCurrentUser();
 builder.Services.AddControllers();
