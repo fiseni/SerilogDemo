@@ -30,10 +30,10 @@ public class DbInitializer : IHostedService
                [TimeStamp] datetime NOT NULL,
                [Exception] nvarchar(max) NULL,
                [LogEvent] nvarchar(max) NULL,
-               [ProcessName] nvarchar(250) NULL,
-               [UserId] nvarchar(250) NULL,
-               [TraceId] nvarchar(250) NULL,
-               [SpanId] nvarchar(250) NULL,
+               [ProcessName] varchar(100) NULL,
+               [UserId] varchar(100) NULL,
+               [TraceId] varchar(100) NULL,
+               [SpanId] varchar(100) NULL,
 
                CONSTRAINT [PK_Logs] PRIMARY KEY CLUSTERED ([Id] ASC)
             );
