@@ -2,6 +2,45 @@
 
 This repository contains a sample Serilog configuration for ASP.NET Core applications. It acts as a reminder how to properly configure various sinks. I tend to read the Serilog configuration from `appsettings.json` files, it's a more flexible solution.
 
+## Running the sample app.
+
+Simply, just run the app. On startup it will automatically create `SerilogDemo` database in your localdb. The db initializer will create the necessary `Logs` table as well.
+
+## Serilog packages
+
+For this example, we need the following packages.
+
+- Serilog.AspNetCore - It contains Console, Debug, File sinks.
+- Serilog.Sinks.MSSqlServer
+- Serilog.Sinks.Seq
+- Serilog.Enrichers.Environment
+- Serilog.Enrichers.Process
+- Serilog.Enrichers.Thread
+- Serilog.Expressions
+
+## Initial configuration
+
+The default request logging implemented by ASP.NET Core is noisy, with multiple events emitted per request. Serilog provides a separate middleware `UseSerilogRequestLogging` which condenses these into a single event. To silence the default events, we'll override the log level to Warning for the AspNetCore namespaces.
+
+Also, we'll enrich the log events with some additional information.
+
+```json
+"Serilog": {
+  "Using": [ "Serilog.Sinks.File", "Serilog.Sinks.MSSqlServer", "Serilog.Sinks.Seq", "Serilog.Sinks.Console", "Serilog.Sinks.Debug" ],
+  "MinimumLevel": {
+    "Default": "Information",
+    "Override": {
+      "Microsoft.AspNetCore.Mvc": "Warning",
+      "Microsoft.AspNetCore.Routing": "Warning",
+      "Microsoft.AspNetCore.Hosting": "Warning"
+    }
+  },
+  "WriteTo": [
+  ],
+  "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId", "WithProcessName" ]
+},
+```
+
 ## File Sink
 
 I don't like the default output template. I prefer the following customizations.
