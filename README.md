@@ -130,6 +130,6 @@ The configuration is as follows. We'll use `LogEvent` instead of `Properties`.
 ## Sub-loggers and Filters
 
 Serilog supports filter expressions through the `Serilog.Expressions` package. But, it's inconvenient that we can't apply them per sink. The override rules can not be applied per sink either.
-For example, we can't filter out Information level EF logs for the MSSQLServer sink only. As a workaround, we can define a sub-logger and apply specific filters for it. Refer to `appsettings.WithSubLogger.json` for an example.
+For example, we can't filter out Information level EF logs for the MSSQLServer sink only. As a workaround, we can define a sub-logger and apply specific filters for it. Refer to [appsettings.WithSubLogger.json](https://github.com/fiseni/SerilogDemo/blob/main/src/SerilogDemo.Web/appsettings.WithSubLogger.json) for an example.
 
 Note: Override rules can not be applied to sub-loggers. That's the reason for using filter expressions.
